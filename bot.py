@@ -1,6 +1,6 @@
 import os
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
-from telegram.ext import Application, CommandHandler, CallbackQueryHandler, ContextTypes
+from telegram.ext import Application, CommandHandler, CallbackQueryHandler, ContextTypes, MessageHandler, filters
 
 TOKEN = os.getenv("TOKEN")
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -103,11 +103,36 @@ async def buttons(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
         context.user_data["last_bot_message"] = msg.message_id
 
+# ----------- ОБРАБОТКА ТЕКСТА -----------
+async def text_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    chat_id = update.effective_chat.id
+    text = update.message.text.strip().lower()  # приводим к нижнему регистру для удобства
+
+    await clear_last(context, chat_id)
+
+    if text == "Джарвис, что за хуйня?":
+        file_path = os.path.join(BASE_DIR, "secret.png")
+        msg = await update.message.reply_photo(
+            photo=open(file_path, "rb"),
+            caption="🤫 *Секрет*",
+            reply_markup=back_menu(),
+            parse_mode="Markdown"
+        )
+        context.user_data["last_bot_message"] = msg.message_id
+    else:
+        msg = await update.message.reply_text(
+            "📌 *Главное меню*",
+            reply_markup=main_menu(),
+            parse_mode="Markdown"
+        )
+        context.user_data["last_bot_message"] = msg.message_id
+
 # ----------- ЗАПУСК -----------
 def main():
     app = Application.builder().token(TOKEN).build()
     app.add_handler(CommandHandler("start", start))
     app.add_handler(CallbackQueryHandler(buttons))
+    app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, text_handler))
     print("Бот запущен.")
     app.run_polling()
 
