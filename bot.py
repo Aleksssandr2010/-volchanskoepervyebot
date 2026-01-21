@@ -4,6 +4,7 @@ from telegram.ext import Application, CommandHandler, CallbackQueryHandler, Cont
 
 TOKEN = os.getenv("TOKEN")
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+COUNTER_FILE = os.path.join(BASE_DIR, "secret_counter.txt")  # файл для счётчика
 
 # ----------- МЕНЮ -----------
 def main_menu():
@@ -44,6 +45,18 @@ async def clear_last(context: ContextTypes.DEFAULT_TYPE, chat_id: int):
         except:
             pass
 
+# ----------- СЧЁТЧИК СЕКРЕТА -----------
+def read_counter():
+    try:
+        with open(COUNTER_FILE, "r") as f:
+            return int(f.read())
+    except:
+        return 0
+
+def write_counter(count):
+    with open(COUNTER_FILE, "w") as f:
+        f.write(str(count))
+
 # ----------- /start -----------
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     chat_id = update.effective_chat.id
@@ -79,7 +92,6 @@ async def buttons(update: Update, context: ContextTypes.DEFAULT_TYPE):
         "img10": ("img10feedback.png", "✍️ *Обратная связь*"),
     }
 
-    # Назад в меню
     if query.data == "back":
         msg = await query.message.reply_text(
             "📌 *Главное меню*",
@@ -89,7 +101,6 @@ async def buttons(update: Update, context: ContextTypes.DEFAULT_TYPE):
         context.user_data["last_bot_message"] = msg.message_id
         return
 
-    # Разделы
     if query.data in images:
         file_name, caption = images[query.data]
         file_path = os.path.join(BASE_DIR, file_name)
@@ -100,22 +111,24 @@ async def buttons(update: Update, context: ContextTypes.DEFAULT_TYPE):
             reply_markup=back_menu(),
             parse_mode="Markdown"
         )
-
         context.user_data["last_bot_message"] = msg.message_id
 
 # ----------- ОБРАБОТКА ТЕКСТА -----------
 async def text_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     chat_id = update.effective_chat.id
-    text = update.message.text.strip().lower()  # убираем пробелы и приводим к нижнему регистру
+    text = update.message.text.strip().lower()  # игнорируем регистр и пробелы
 
     await clear_last(context, chat_id)
 
-    # эталонная фраза тоже в нижнем регистре
     if text == "джарвис, что за хуйня?":
+        counter = read_counter()
+        counter += 1
+        write_counter(counter)
+
         file_path = os.path.join(BASE_DIR, "secret.png")
         msg = await update.message.reply_photo(
             photo=open(file_path, "rb"),
-            caption="*Сэр, я сам в ахуе*",
+            caption=f"*Сэр, я сам в ахуе*\nИспользовано {counter} раз",
             reply_markup=back_menu(),
             parse_mode="Markdown"
         )
@@ -139,5 +152,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
-
