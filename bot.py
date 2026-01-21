@@ -106,11 +106,12 @@ async def buttons(update: Update, context: ContextTypes.DEFAULT_TYPE):
 # ----------- ОБРАБОТКА ТЕКСТА -----------
 async def text_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     chat_id = update.effective_chat.id
-    text = update.message.text.strip().lower()  # приводим к нижнему регистру для удобства
+    text = update.message.text.strip().lower()  # убираем пробелы и приводим к нижнему регистру
 
     await clear_last(context, chat_id)
 
-    if text == "Джарвис, что за хуйня?":
+    # эталонная фраза тоже в нижнем регистре
+    if text == "джарвис, что за хуйня?":
         file_path = os.path.join(BASE_DIR, "secret.png")
         msg = await update.message.reply_photo(
             photo=open(file_path, "rb"),
@@ -138,3 +139,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
