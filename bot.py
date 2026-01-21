@@ -138,7 +138,7 @@ async def text_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
         file_path = os.path.join(BASE_DIR, "Z.png")
         msg = await update.message.reply_photo(
             photo=open(file_path, "rb"),
-            caption="Z",
+            caption="Слава Богу Z🙏❤СЛАВА Z🙏❤АНГЕЛА ХРАНИТЕЛЯ Z КАЖДОМУ ИЗ ВАС🙏❤БОЖЕ ХРАНИ Z🙏❤СПАСИБО ВАМ НАШИ СВО🙏🏼❤🇷🇺 ХРАНИ ZOV✊🇷🇺💯СПАСИБО НАШИМ БОЙЦАМСлава Богу Z🙏❤СЛАВА Z🙏❤АНГЕЛА ХРАНИНАШ Слава Богу 🙏❤СЛАВА РОССИИ ZOV 🙏❤АНГЕЛА ХРАНИТЕЛЯ КАЖДОМУ ИЗ ВАС 🙏❤БОЖЕ ХРАНИ РОССИЮ СВО 🙏❤СПАСИБО ВАМ НАШИ МАЛЬЧИКИ 🙏🏼❤🇷🇺 ЧТО ПОДДЕРЖИВАЕТЕ НАШИХ МАЛЬЧИКОВ НА СВО🙏🏼❤🇷🇺 Слава Богу Z🙏❤СЛАВА Z🙏❤АНГЕЛА ХРАНИТЕЛЯ Z КАЖДОМУ ИЗ ВАС🙏❤БОЖЕ ХРАНИ Z🙏❤СПАСИБО ВАМ НАШИ СВО🙏🏼❤🇷🇺 ХРАНИ ZOV✊🇷🇺",
             reply_markup=back_menu(),
             parse_mode="Markdown"
         )
@@ -164,4 +164,5 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
