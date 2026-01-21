@@ -134,7 +134,7 @@ async def text_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
         )
         context.user_data["last_bot_message"] = msg.message_id
 
-    elif text == "z":  # новая секретная фраза
+    elif text == "гойда":  # новая секретная фраза
         file_path = os.path.join(BASE_DIR, "Z.png")
         msg = await update.message.reply_photo(
             photo=open(file_path, "rb"),
@@ -164,5 +164,6 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
