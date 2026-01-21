@@ -115,7 +115,7 @@ async def text_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
         file_path = os.path.join(BASE_DIR, "secret.png")
         msg = await update.message.reply_photo(
             photo=open(file_path, "rb"),
-            caption="🤫 *Секрет*",
+            caption="*Сэр, я сам в ахуе*",
             reply_markup=back_menu(),
             parse_mode="Markdown"
         )
@@ -139,4 +139,5 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
